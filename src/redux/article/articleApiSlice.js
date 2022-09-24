@@ -9,13 +9,13 @@ export const articleApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getArticles: builder.query({
             query: () => ({
-                url: '/article',
+                url: '/articles/All',
                 method: 'GET',
             }),
             transformResponse: responseData => articleAdapter.setAll(initialState, responseData),
             providesTags: (result, _error, _arg) => result
                 ? [
-                    ...result.map(({ id }) => ({ type: 'Article', id })),
+                    ...result.ids.map(id => ({ type: 'Article', id })),
                     { type: 'Article', id: 'LIST' },
                 ]
                 : [{ type: 'Article', id: 'LIST' }],
@@ -30,7 +30,7 @@ export const articleApiSlice = apiSlice.injectEndpoints({
         }),
         getArticlesInCategory: builder.query({
             query: ({ id }) => ({
-                url: `/article/category/${id}`,
+                url: `/articles?CategoryId=${id}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, id) => [{ type: 'Article', id }],

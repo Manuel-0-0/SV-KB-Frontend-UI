@@ -12,7 +12,6 @@ const axiosBaseQuery = () =>
                 url,
                 method,
                 data,
-                withCredentials: true
             })
             return { data: result.data }
         } catch (axiosError) {

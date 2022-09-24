@@ -13,14 +13,16 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: responseData => cartegoryAdapter.setAll(initialState, responseData),
-            providesTags: (result, _error, _arg) => [
-                result
-                    ? [
-                        ...result.map(({ id }) => ({ type: 'Category', id })),
-                        { type: 'Category', id: 'LIST' },
-                    ]
-                    : [{ type: 'Category', id: 'LIST' }],
-            ]
+            providesTags: (result, _error, _arg) => {
+                return [
+                    result
+                        ? [
+                            ...result.ids.map(id => ({ type: 'Category', id })),
+                            { type: 'Category', id: 'LIST' },
+                        ]
+                        : [{ type: 'Category', id: 'LIST' }],
+                ]
+            }
         }),
         getCategory: builder.query({
             query: ({ id }) => ({
@@ -64,8 +66,9 @@ const selectCatgeoryData = createSelector(
     categoryResult => categoryResult.data
 )
 
+
 export const {
     selectAll: selectAllCategories,
     selectById: selectCategoryById,
-    selectIds: selectCategoryIds
+    selectIds: selectCategoryIds,
 } = cartegoryAdapter.getSelectors(state => selectCatgeoryData(state) ?? initialState)

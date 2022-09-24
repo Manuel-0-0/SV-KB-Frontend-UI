@@ -1,40 +1,71 @@
 import React from "react";
-import { useGetCategoriesQuery } from "../redux/category/categoryApiSlice";
+import { useSelector } from "react-redux";
+import {
+  useGetCategoriesQuery,
+  selectAllCategories,
+} from "../redux/category/categoryApiSlice";
+import {
+  selectArticleIds,
+  useGetArticlesQuery,
+} from "../redux/article/articleApiSlice";
 import Loading from "../components/Loading";
+import DefaultLayout from "../layouts/DefaultLayout";
+import ArticleCard from "../components/ArticleCard";
 
 const Home = () => {
-  const { isLoading, isSuccess, isError, error } = useGetCategoriesQuery;
+  const {
+    isLoading: categoryLoading,
+    isSuccess: categorySuccess,
+    isError: categoryIsError,
+    error: categoryError,
+  } = useGetCategoriesQuery();
+  const { isLoading, isSuccess, isError, error } = useGetArticlesQuery();
+  const articleIds = useSelector(selectArticleIds);
+  const categories = useSelector(selectAllCategories);
 
-  if (isLoading) return <Loading />;
-  else if (isError) return <p>{error}</p>;
-  else if (isSuccess)
+  if (isLoading || categoryLoading) return <Loading />;
+  else if (isError || categoryIsError) return <p>{error || categoryError} </p>;
+  else if (isSuccess || categorySuccess)
     return (
-      <>
-        <div className="h-full flex mt-10 md:mt-0 flex-col md:flex-row items-center">
-          <div className=" px-4 md:px-16 mb-10">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4 md:mb-8">
-              Automobiles{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-600">
-                Finder
-              </span>
+      <DefaultLayout>
+        <div className="h-full flex mt-10 md:mt-10 flex-col items-center">
+          <div className="flex justify-center items-center px-4 md:px-16 mb-10 w-full">
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-center mb-4 md:mb-8">
+              Popular Articles
             </h1>
-            <p className="text-xl text-gray-600 mb-2">
-              Find automobiles easily from the comfort of your phone
-            </p>
-            <p className="mt-6"></p>
           </div>
-          <div className="">
-            {" "}
-            <img src="/images/search.png" alt="header_image" />
+
+          <div className="lg:flex lg:items-center lg:justify-center mb-14 w-full">
+            <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 w-9/12 mx-auto">
+              {articleIds.length > 0 ? (
+                articleIds.map((articleId) => (
+                  <ArticleCard key={articleId} articleId={articleId} />
+                ))
+              ) : (
+                <p className="text-xl text-gray-600 mb-2">
+                  Sorry no articles to show{" "}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="lg:flex lg:items-center flex-col lg:justify-center mb-14 w-full ">
+            <div className="flex justify-center items-center bg-blue-300 text-white py-4 px-4 md:px-16 mb-10 w-full">
+              <h3 className="text-2xl md:text-3xl font-bold leading-tight text-center">
+                Categories
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 w-9/12 mx-auto">
+              {categories.length > 0 ? (
+                categories.map((category) => <span key={category.id}>{category.categoryName}</span>)
+              ) : (
+                <p className="text-xl text-gray-600 mb-2">
+                  Sorry no Categories to show{" "}
+                </p>
+              )}
+            </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center pt-10 md:pt-20">
-          <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-4 md:mb-8">
-            Featured Cars
-          </h2>
-          <div className="lg:flex lg:items-center lg:justify-center mb-14"></div>
-        </div>
-      </>
+      </DefaultLayout>
     );
 };
 
