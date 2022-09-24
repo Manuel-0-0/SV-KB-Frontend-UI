@@ -1,33 +1,33 @@
 import {
     createApi,
-    fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
+import axios from 'axios'
 
 
-const baseQuery = fetchBaseQuery({
-    baseUrl: 'https://sv-kb.herokuapp.com/api/v1',
-    prepareHeaders: (headers, api) => {
-        // const state = api.getState()
-        // const { token } = state.auth
-        // if (token) {
-        //     headers.set('authorization', `Bearer ${token}`)
-        // }
-        return headers
-    },
-})
-
-const baseQueryWithReauth = async (
-    args,
-    api,
-    extraOptions
-    )=> {
-    let result = await baseQuery(args, api, extraOptions)
-    // Refresh token here
-    return result
-}
+const axiosBaseQuery = () =>
+    async ({ url, method, data }) => {
+        try {
+            const result = await axios({
+                baseURL: 'https://sv-kb.herokuapp.com/api/v1/',
+                url,
+                method,
+                data,
+                withCredentials: true
+            })
+            return { data: result.data }
+        } catch (axiosError) {
+            let err = axiosError
+            return {
+                error: {
+                    status: err.response?.status,
+                    data: err.response?.data || err.message,
+                },
+            }
+        }
+    }
 
 export const apiSlice = createApi({
-    baseQuery: baseQueryWithReauth,
+    baseQuery: axiosBaseQuery(),
     endpoints: () => ({}),
     tagTypes: ['Category', 'Article']
 })

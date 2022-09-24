@@ -3,7 +3,7 @@ import { apiSlice } from '../api/apiSlice'
 
 const cartegoryAdapter = createEntityAdapter()
 
-const initialState = cartegoryAdapter.getInitialState()
+const initialState = cartegoryAdapter.getInitialState({})
 
 export const categoryApiSplice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -33,7 +33,7 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
             query: (body) => ({
                 url: '/category',
                 method: 'POST',
-                body: { ...body },
+                data: { ...body },
             }),
             invalidatesTags: [{ type: 'Category', id: 'LIST' }],
         }),
@@ -41,7 +41,7 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
             query: ({ id, ...body }) => ({
                 url: `/category/${id}`,
                 method: 'PATCH',
-                body: { ...body },
+                data: { ...body },
             }),
             invalidatesTags: (_result, _error, arg) => [{ type: 'Category', id: arg.id }],
         }),
