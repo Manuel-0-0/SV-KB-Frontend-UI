@@ -5,15 +5,13 @@ import {
 
 
 const baseQuery = fetchBaseQuery({
-    // baseUrl for api
-    baseUrl: 'https://kayode/api/v1',
-    credentials: 'include',
+    baseUrl: 'https://sv-kb.herokuapp.com/api/v1',
     prepareHeaders: (headers, api) => {
-        const state = api.getState()
-        const { token } = state.auth
-        if (token) {
-            headers.set('authorization', `Bearer ${token}`)
-        }
+        // const state = api.getState()
+        // const { token } = state.auth
+        // if (token) {
+        //     headers.set('authorization', `Bearer ${token}`)
+        // }
         return headers
     },
 })
@@ -31,5 +29,5 @@ const baseQueryWithReauth = async (
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: () => ({}),
-    tagTypes: ['Categories', 'Articles']
+    tagTypes: ['Category', 'Article']
 })

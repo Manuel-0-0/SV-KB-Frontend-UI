@@ -1,19 +1,33 @@
+import { createEntityAdapter, createSelector } from '@reduxjs/toolkit'
 import { apiSlice } from '../api/apiSlice'
 
-export const userApiSplice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({
+const cartegoryAdapter = createEntityAdapter()
+
+const initialState = cartegoryAdapter.getInitialState()
+
+export const categoryApiSplice = apiSlice.injectEndpoints({
+    endpoints: builder => ({
         getCategories: builder.query({
             query: () => ({
-                url: '/category',
+                url: '/category/AllCategories',
                 method: 'GET',
             }),
-            providesTags: ['Categories']
+            transformResponse: responseData => cartegoryAdapter.setAll(initialState, responseData),
+            providesTags: (result, _error, _arg) => [
+                result
+                    ? [
+                        ...result.map(({ id }) => ({ type: 'Category', id })),
+                        { type: 'Category', id: 'LIST' },
+                    ]
+                    : [{ type: 'Category', id: 'LIST' }],
+            ]
         }),
         getCategory: builder.query({
             query: ({ id }) => ({
                 url: `/category/${id}`,
                 method: 'GET',
             }),
+            providesTags: (_result, _error, id) => [{ type: 'Category', id }],
         }),
         createCategory: builder.mutation({
             query: (body) => ({
@@ -21,7 +35,7 @@ export const userApiSplice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { ...body },
             }),
-            invalidatesTags: ['Categories']
+            invalidatesTags: [{ type: 'Category', id: 'LIST' }],
         }),
         updateCategory: builder.mutation({
             query: ({ id, ...body }) => ({
@@ -29,16 +43,29 @@ export const userApiSplice = apiSlice.injectEndpoints({
                 method: 'PATCH',
                 body: { ...body },
             }),
-            invalidatesTags: ['Categories']
+            invalidatesTags: (_result, _error, arg) => [{ type: 'Category', id: arg.id }],
         }),
         deleteCategory: builder.mutation({
             query: ({ id }) => ({
                 url: `/category/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Categories']
+            invalidatesTags: (_result, _error, arg) => [{ type: 'Category', id: arg.id }]
         }),
     }),
 })
 
-export const { useGetCategoriesQuery, useGetCategoryQuery, useCreateCategoryMutation, useDeleteCategoryMutation, useUpdateCategoryMutation } = userApiSplice
+export const { useGetCategoriesQuery, useGetCategoryQuery, useCreateCategoryMutation, useDeleteCategoryMutation, useUpdateCategoryMutation } = categoryApiSplice
+
+export const selectCategoryResult = categoryApiSplice.endpoints.getCategories.select()
+
+const selectCatgeoryData = createSelector(
+    selectCategoryResult,
+    categoryResult => categoryResult.data
+)
+
+export const {
+    selectAll: selectAllCategories,
+    selectById: selectCategoryById,
+    selectIds: selectCategoryIds
+} = cartegoryAdapter.getSelectors(state => selectCatgeoryData(state) ?? initialState)

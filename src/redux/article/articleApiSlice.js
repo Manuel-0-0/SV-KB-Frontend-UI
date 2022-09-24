@@ -1,17 +1,35 @@
+import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
 import { apiSlice } from '../api/apiSlice'
 
-export const userApiSplice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({
+const articleAdapter = createEntityAdapter({})
+
+const initialState = articleAdapter.getInitialState()
+
+export const articleApiSlice = apiSlice.injectEndpoints({
+    endpoints: builder => ({
         getArticles: builder.query({
             query: () => ({
                 url: '/articles',
                 method: 'GET',
             }),
-            providesTags: ['Articles']
+            transformResponse: responseData => articleAdapter.setAll(initialState, responseData),
+            providesTags: (result, _error, _arg) => result
+                ? [
+                    ...result.map(({ id }) => ({ type: 'Article', id })),
+                    { type: 'Article', id: 'LIST' },
+                ]
+                : [{ type: 'Article', id: 'LIST' }],
+
         }),
         getArticle: builder.query({
             query: ({ id }) => ({
                 url: `/article/${id}`,
+                method: 'GET',
+            }),
+        }),
+        getArticlesInCategory: builder.query({
+            query: ({ id }) => ({
+                url: `/article/category/${id}`,
                 method: 'GET',
             }),
         }),
@@ -41,4 +59,17 @@ export const userApiSplice = apiSlice.injectEndpoints({
     }),
 })
 
-export const { useGetArticlesQuery, useGetArticleQuery, useCreateArticleMutation, useDeleteArticleMutation, useUpdateArticleMutation } = userApiSplice
+export const { useGetArticlesQuery, useGetArticleQuery, useGetArticlesInCategoryQuery, useCreateArticleMutation, useDeleteArticleMutation, useUpdateArticleMutation } = articleApiSlice
+
+export const selectArticleResult = articleApiSlice.endpoints.getArticles.select()
+
+const selectArticleData = createSelector(
+    selectArticleResult,
+    articleResult => articleResult.data
+)
+
+export const {
+    selectAll: selectAllArticles,
+    selectById: selectArticleById,
+    selectIds: selectArticleIds
+} = articleAdapter.getSelectors(state => selectArticleData(state) ?? initialState)
