@@ -3,7 +3,7 @@ import { apiSlice } from '../api/apiSlice'
 
 const articleAdapter = createEntityAdapter()
 
-const initialState = articleAdapter.getInitialState()
+const initialState = articleAdapter.getInitialState({})
 
 export const articleApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
