@@ -13,12 +13,10 @@ export const articleApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: responseData => articleAdapter.setAll(initialState, responseData),
-            providesTags: (result, _error, _arg) => result
-                ? [
-                    ...result.ids.map(id => ({ type: 'Article', id })),
-                    { type: 'Article', id: 'LIST' },
-                ]
-                : [{ type: 'Article', id: 'LIST' }],
+            providesTags: (result, _error, _arg) => [
+                { type: 'Articles', id: "LIST" },
+                ...result?.ids?.map(({ id }) => ({ type: 'Articles', id })),
+            ]
 
         }),
         getArticle: builder.query({
@@ -26,22 +24,22 @@ export const articleApiSlice = apiSlice.injectEndpoints({
                 url: `/article/${id}`,
                 method: 'GET',
             }),
-            providesTags: (_result, _error, id) => [{ type: 'Article', id }],
+            providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
         }),
         getArticlesInCategory: builder.query({
             query: ({ id }) => ({
                 url: `/articles?CategoryId=${id}`,
                 method: 'GET',
             }),
-            providesTags: (_result, _error, id) => [{ type: 'Article', id }],
+            providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
         }),
         createArticle: builder.mutation({
             query: (body) => ({
-                url: '/article',
+                url: '/articles/NewArticle',
                 method: 'POST',
                 data: { ...body },
             }),
-            invalidatesTags: [{ type: 'Article', id: 'LIST' }],
+            invalidatesTags: [{ type: 'Articles', id: "LIST" }],
         }),
         updateArticle: builder.mutation({
             query: ({ id, ...body }) => ({
@@ -49,14 +47,14 @@ export const articleApiSlice = apiSlice.injectEndpoints({
                 method: 'PATCH',
                 data: { ...body },
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Category', id: arg.id }],
+            invalidatesTags: (_result, _error, arg) => [{ type: 'Articles', id: arg.id }],
         }),
         deleteArticle: builder.mutation({
             query: ({ id }) => ({
                 url: `/article/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Article', id: arg.id }]
+            invalidatesTags: (_result, _error, arg) => [{ type: 'Articles', id: arg.id }]
         }),
     }),
 })

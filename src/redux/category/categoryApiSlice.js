@@ -13,31 +13,26 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: responseData => cartegoryAdapter.setAll(initialState, responseData),
-            providesTags: (result, _error, _arg) => {
-                return [
-                    result
-                        ? [
-                            ...result.ids.map(id => ({ type: 'Category', id })),
-                            { type: 'Category', id: 'LIST' },
-                        ]
-                        : [{ type: 'Category', id: 'LIST' }],
-                ]
-            }
+            providesTags: (result, _error, _arg) => [
+                { type: 'Categories', id: "LIST" },
+                ...result?.ids?.map(({ id }) => ({ type: 'Categories', id })),
+            ]
+
         }),
         getCategory: builder.query({
             query: ({ id }) => ({
                 url: `/category/${id}`,
                 method: 'GET',
             }),
-            providesTags: (_result, _error, id) => [{ type: 'Category', id }],
+            providesTags: (_result, _error, id) => [{ type: 'Categories', id }],
         }),
         createCategory: builder.mutation({
             query: (body) => ({
-                url: '/category',
+                url: '/category/create',
                 method: 'POST',
                 data: { ...body },
             }),
-            invalidatesTags: [{ type: 'Category', id: 'LIST' }],
+            invalidatesTags: [{ type: 'Categories', id: "LIST" }],
         }),
         updateCategory: builder.mutation({
             query: ({ id, ...body }) => ({
@@ -45,14 +40,14 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
                 method: 'PATCH',
                 data: { ...body },
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Category', id: arg.id }],
+            invalidatesTags: (_result, _error, arg) => [{ type: 'Categories', id: arg.id }],
         }),
         deleteCategory: builder.mutation({
             query: ({ id }) => ({
                 url: `/category/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Category', id: arg.id }]
+            invalidatesTags: (_result, _error, arg) => [{ type: 'Categories', id: arg.id }]
         }),
     }),
 })

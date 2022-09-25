@@ -2,8 +2,7 @@ import React from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useLocation, Link } from "react-router-dom";
-import Icon from '../utilities/icons/SunValley'
-
+import Icon from "../utilities/icons/SunValley";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -22,11 +21,19 @@ const Header = () => {
       href: "/article",
       current: location.pathname.startsWith("/article") ? true : false,
     },
+    {
+      name: "Create",
+      href: "/create",
+      current: location.pathname === "/create" ? true : false,
+    },
   ];
 
   return (
     <>
-      <Disclosure as="nav" className=" relative w-screen bg-blue-200 h-full z-20">
+      <Disclosure
+        as="nav"
+        className=" relative w-screen bg-blue-200 h-full z-20"
+      >
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto py-2 sm:py-4 px-2">

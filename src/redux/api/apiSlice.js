@@ -28,5 +28,5 @@ const axiosBaseQuery = () =>
 export const apiSlice = createApi({
     baseQuery: axiosBaseQuery(),
     endpoints: () => ({}),
-    tagTypes: ['Category', 'Article']
+    tagTypes: ['Categories', 'Articles']
 })
