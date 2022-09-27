@@ -1,66 +1,99 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import DefaultLayout from "../layouts/DefaultLayout";
-import { selectAllCategories } from "../redux/category/categoryApiSlice";
-import DropDown from "../components/DropDown";
+import { useParams, useNavigate } from "react-router-dom";
+import moment from "moment";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import parse from "html-react-parser";
+import {
+  useGetArticleQuery,
+  useDeleteArticleMutation,
+} from "../redux/article/articleApiSlice";
+import Loading from "../components/Loading";
+import EditArticleModal from "../components/EditArticleModal";
 
-const Article = () => {
-  const categories = useSelector(selectAllCategories);
-  const [category, setCategory] = useState();
-  return (
-    <DefaultLayout>
-      <div className="w-9/12 mx-auto p-4">
-        <label
-          htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only"
-        >
-          Search
-        </label>
-        <div className="relative">
-          <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-            <svg
-              aria-hidden="true"
-              className="w-5 h-5 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
-            </svg>
+const Articles = () => {
+  const { articleId } = useParams();
+  const navigate = useNavigate();
+  const {
+    data: article,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetArticleQuery({ id: articleId });
+
+  const [deleteArticle] = useDeleteArticleMutation();
+
+  const [open, setOpen] = useState(false);
+
+  const onModalClose = () => {
+    setOpen(false);
+  };
+
+  const handleDeleteArticlePost = async () => {
+    try {
+      await deleteArticle({ id: articleId }).unwrap();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (isLoading) return <Loading />;
+  else if (isError) return <p>{error} </p>;
+  else if (isSuccess)
+    return (
+      <DefaultLayout>
+        <div className="h-96 flex max-w-4xl md:mt-20 mx-auto px-12 lg:px-24 justify-center items-center">
+          <img
+            src="https://th.bing.com/th/id/R.f9ef5df23a52d7f600bb0213d5184a67?rik=eYxpO8N1BBMGhw&pid=ImgRaw&r=0"
+            alt={article?.title}
+            className="w-full object-cover"
+          />
+        </div>
+        <div className="max-w-4xl mx-auto bg-white py-12 px-12 lg:px-24">
+          <h2 className="mt-4 uppercase tracking-widest text-xs text-gray-600">
+            {moment(article?.dateCreated).format("Do MMM, YYYY")}
+          </h2>
+          <h1 className="font-display text-2xl md:text-3xl text-gray-900 mt-4 flex">
+            {article?.title}
+
+            <button onClick={() => setOpen(true)}>
+              <PencilSquareIcon className="ml-2 h-6 w-6 text-blue-500" />
+            </button>
+
+            <button onClick={() => handleDeleteArticlePost()}>
+              <TrashIcon className="ml-2 h-6 w-6 text-red-500" />
+            </button>
+          </h1>
+          <div className="prose prose-sm sm:prose lg:prose-lg mt-6">
+            <p data-color-mode="light">
+              {" "}
+              {parse(`${article?.content}`)}
+            </p>
           </div>
-          <input
-            type="search"
-            id="default-search"
-            className="block p-4 pl-10 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search Aticles..."
-            required
-          />
-          <button
-            type="submit"
-            className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
-          >
-            Search
-          </button>
+
+          <div className="text-lg mt-10 font-bold">
+            {/* <p className="text-gray-900 leading-none">
+              Created By :
+              {user && user._id === carPost.createdBy._id
+                ? " You"
+                : carPost.createdBy.firstName +
+                  " " +
+                  carPost.createdBy.lastName}
+            </p>
+            <p className="text-gray-900 leading-none mt-4">
+              Contact : {carPost.createdBy.email}
+            </p> */}
+          </div>
         </div>
-        <div className="mt-4">
-          <DropDown
-            data={categories}
-            identifier={"id"}
-            name={"categoryName"}
-            selected={category}
-            setSelected={setCategory}
-            defaultName={"Categories"}
-          />
-        </div>
-      </div>
-    </DefaultLayout>
-  );
+        <EditArticleModal
+          modal={open}
+          onModalClose={onModalClose}
+          article={article}
+        />
+      </DefaultLayout>
+    );
 };
 
-export default Article;
+export default Articles;

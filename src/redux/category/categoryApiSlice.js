@@ -13,10 +13,12 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: responseData => cartegoryAdapter.setAll(initialState, responseData),
-            providesTags: (result, _error, _arg) => [
-                { type: 'Categories', id: "LIST" },
-                ...result?.ids?.map(({ id }) => ({ type: 'Categories', id })),
-            ]
+            providesTags: (result, _error, _arg) =>
+                result ?
+                    [
+                        { type: 'Categories', id: "LIST" },
+                        ...result?.ids?.map(({ id }) => ({ type: 'Categories', id })),
+                    ] : [{ type: 'Categories', id: "LIST" }]
 
         }),
         getCategory: builder.query({

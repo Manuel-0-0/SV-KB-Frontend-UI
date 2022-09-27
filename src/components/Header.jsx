@@ -18,8 +18,8 @@ const Header = () => {
     },
     {
       name: "Articles",
-      href: "/article",
-      current: location.pathname.startsWith("/article") ? true : false,
+      href: "/articles",
+      current: location.pathname.startsWith("/articles") ? true : false,
     },
     {
       name: "Create",
@@ -51,7 +51,9 @@ const Header = () => {
                 </div>
                 <div className="flex-1 flex items-stretch justify-start px-2">
                   <div className="flex-shrink-0 flex items-center">
-                    <Icon />
+                    <Link to="/">
+                      <Icon />
+                    </Link>
                   </div>
                   <div className="hidden sm:block my-auto ml-auto lg:mr-12 lg:items-center lg:w-auto lg:space-x-12">
                     <div className="flex items-center space-x-4">

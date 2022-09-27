@@ -1,31 +1,18 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import {
-  useGetCategoriesQuery,
   selectAllCategories,
 } from "../redux/category/categoryApiSlice";
 import {
   selectArticleIds,
-  useGetArticlesQuery,
 } from "../redux/article/articleApiSlice";
-import Loading from "../components/Loading";
 import DefaultLayout from "../layouts/DefaultLayout";
 import ArticleCard from "../components/ArticleCard";
 
 const Home = () => {
-  const {
-    isLoading: categoryLoading,
-    isSuccess: categorySuccess,
-    isError: categoryIsError,
-    error: categoryError,
-  } = useGetCategoriesQuery();
-  const { isLoading, isSuccess, isError, error } = useGetArticlesQuery();
   const articleIds = useSelector(selectArticleIds);
   const categories = useSelector(selectAllCategories);
-
-  if (isLoading || categoryLoading) return <Loading />;
-  else if (isError || categoryIsError) return <p>{error || categoryError} </p>;
-  else if (isSuccess || categorySuccess)
+  
     return (
       <DefaultLayout>
         <div className="h-full flex mt-10 md:mt-10 flex-col items-center">

@@ -13,15 +13,17 @@ export const articleApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: responseData => articleAdapter.setAll(initialState, responseData),
-            providesTags: (result, _error, _arg) => [
-                { type: 'Articles', id: "LIST" },
-                ...result?.ids?.map(({ id }) => ({ type: 'Articles', id })),
-            ]
+            providesTags: (result, _error, _arg) =>
+                result ?
+                    [
+                        { type: 'Articles', id: "LIST" },
+                        ...result?.ids?.map(({ id }) => ({ type: 'Articles', id })),
+                    ] : [{ type: 'Articles', id: "LIST" }]
 
         }),
         getArticle: builder.query({
             query: ({ id }) => ({
-                url: `/article/${id}`,
+                url: `/articles/${id}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
@@ -43,15 +45,15 @@ export const articleApiSlice = apiSlice.injectEndpoints({
         }),
         updateArticle: builder.mutation({
             query: ({ id, ...body }) => ({
-                url: `/article/${id}`,
-                method: 'PATCH',
+                url: `/articles/update/${id}`,
+                method: 'PUT',
                 data: { ...body },
             }),
             invalidatesTags: (_result, _error, arg) => [{ type: 'Articles', id: arg.id }],
         }),
         deleteArticle: builder.mutation({
-            query: ({ id }) => ({
-                url: `/article/${id}`,
+            query: article => ({
+                url: `/articles/Delete/${article.id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: (_result, _error, arg) => [{ type: 'Articles', id: arg.id }]

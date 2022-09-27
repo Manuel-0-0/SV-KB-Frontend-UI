@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { useCreateArticleMutation } from "../redux/article/articleApiSlice";
 import DropDown from "./DropDown";
+import { formats, modules } from "../utilities/Editor";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
@@ -51,23 +54,7 @@ const CreateArticle = () => {
             Article Title
           </label>
         </div>
-        <div className="relative z-0 mb-6 w-full group">
-          <label
-            htmlFor="content"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Content
-          </label>
-          <textarea
-            id="content"
-            rows="4"
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-            placeholder="Leave a comment..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-        </div>
-        <div className="relative z-0 mb-6 w-full group">
+        <div className="relative z-10 mb-6 w-full group mt-4">
           <DropDown
             data={categories}
             identifier={"id"}
@@ -77,15 +64,34 @@ const CreateArticle = () => {
             defaultName={"Categories"}
           />
         </div>
+        <div className="relative z-0 mb-6 w-full h-full">
+          <label
+            htmlFor="content"
+            className="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Content
+          </label>
+          <ReactQuill
+            theme="snow"
+            placeholder="Write Something..."
+            formats={formats}
+            modules={modules}
+            className="block p-2.5 w-full text-sm h-a4"
+            value={content}
+            onChange={setContent}
+          />
+        </div>
 
-        <button
-          disabled={!canSave}
-          onClick={createArticle}
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-        >
-          Submit
-        </button>
+        <div className="relative z-0 mb-6 w-full h-full">
+          <button
+            disabled={!canSave}
+            onClick={createArticle}
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </>
   );

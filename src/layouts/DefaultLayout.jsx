@@ -6,7 +6,7 @@ const DefaultLayout = ({ children }) => {
   return (
     <>
       <Header />
-      {children}
+      <div className="flex-grow">{children}</div>
       <Footer />
     </>
   );
