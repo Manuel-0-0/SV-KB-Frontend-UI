@@ -44,13 +44,13 @@ const Articles = () => {
   else if (isSuccess)
     return (
       <DefaultLayout>
-        <div className="h-96 flex max-w-4xl md:mt-20 mx-auto px-12 lg:px-24 justify-center items-center">
+        {/* <div className="h-96 flex max-w-4xl md:mt-20 mx-auto px-12 lg:px-24 justify-center items-center">
           {/* <img
             src="https://th.bing.com/th/id/R.f9ef5df23a52d7f600bb0213d5184a67?rik=eYxpO8N1BBMGhw&pid=ImgRaw&r=0"
             alt={article?.title}
             className="w-full object-cover"
-          /> */}
-        </div>
+          /> 
+        </div> */}
         <div className="max-w-4xl mx-auto bg-white py-12 px-12 lg:px-24">
           <h2 className="mt-4 uppercase tracking-widest text-xs text-gray-600">
             {moment(article?.dateCreated).format("Do MMM, YYYY")}
