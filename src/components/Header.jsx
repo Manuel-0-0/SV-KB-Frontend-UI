@@ -32,7 +32,7 @@ const Header = () => {
     <>
       <Disclosure
         as="nav"
-        className=" relative w-screen bg-blue-200 h-full z-20"
+        className=" relative w-screen bg-[#324299] h-full z-20"
       >
         {({ open }) => (
           <>
@@ -63,8 +63,8 @@ const Header = () => {
                             to={item.href}
                             key={item.name}
                             className={classNames(
-                              item.current && "bg-blue-600 text-white ",
-                              "px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 hover:text-white"
+                              item.current && "bg-white text-[#324299] hover:text-[#324299]",
+                              "px-3 py-2 rounded-md text-sm text-white font-medium outline outline-0 hover:outline-1 hover:text-white"
                             )}
                             aria-current={item.current ? "page" : undefined}
                           >

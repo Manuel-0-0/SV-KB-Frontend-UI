@@ -17,7 +17,7 @@ const Home = () => {
       <DefaultLayout>
         <div className="h-full flex mt-10 md:mt-10 flex-col items-center">
           <div className="flex justify-center items-center px-4 md:px-16 mb-10 w-full">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-center mb-4 md:mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-center mb-4 md:mb-8 text-[#324299]">
               Popular Articles
             </h1>
           </div>
@@ -36,7 +36,7 @@ const Home = () => {
             </div>
           </div>
           <div className="lg:flex lg:items-center flex-col lg:justify-center mb-14 w-full ">
-            <div className="flex justify-center items-center bg-blue-300 text-white py-4 px-4 md:px-16 mb-10 w-full">
+            <div className="flex justify-center items-center bg-[#324299] text-white py-4 px-4 md:px-16 mb-10 w-full">
               <h3 className="text-2xl md:text-3xl font-bold leading-tight text-center">
                 Categories
               </h3>

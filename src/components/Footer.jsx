@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <>
-      <div className=" h-full bg-blue-300 overflow-hidden">
+      <div className=" h-full bg-[#324299] overflow-hidden">
         <div className="divide-y divide-white">
           <div className="lg:w-10/12 lg:mx-auto text-white">
             <div className="flex flex-col py-10 px-8 sm:grid sm:grid-cols-2 sm:gap-4 mt-12">
-              <div>
+              {/* <div> 
                 <p className="font-bold ">Social Links</p>
                 <p className="font-semibold">You can always hit us up at:</p>
                 <p className="flex py-2">
@@ -87,9 +87,13 @@ const Footer = () => {
                     </svg>
                   </a>
                 </p>
-                <p className="font-bold">sv-kb@gmail.com</p>
+                
+              </div> */}
+              <div>
+                <p className="font-bold">IT@SunValley.com</p>
                 <p className="font-bold">+2349000000000</p>
               </div>
+
               <div>
                 <p className="font-bold mt-6 sm:mt-0">Menu</p>
                 <ul className="list-none">

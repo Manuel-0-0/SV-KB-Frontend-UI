@@ -9,17 +9,17 @@ const ArticleCard = ({ articleId }) => {
   return (
     <div className="shadow-lg max-w-sm rounded-t-md overflow-hidden">
       <div className="">
-        <div className=" block px-6 py-4">
+        <div className=" block px-5 py-3 text-lg font-bold bg-[#324299] text-white">
           <div className="">{article.title}</div>
         </div>
 
-        <div className="px-6">
-          <p className="text-sm text-left">
+        <div className="px-6 py-3">
+          <p className="text-sm text-left ">
             {parse(`${article.content.substring(0, 250)}...`)}
           </p>
         </div>
         <div className="py-4 px-6  text-left">
-          <Link to={`/articles/${articleId}`} className="text-blue-500">
+          <Link to={`/articles/${articleId}`} className="text-[#324299]">
             Learn more...
           </Link>
         </div>
