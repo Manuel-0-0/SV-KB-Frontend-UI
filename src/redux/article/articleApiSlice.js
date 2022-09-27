@@ -45,7 +45,7 @@ export const articleApiSlice = apiSlice.injectEndpoints({
         }),
         updateArticle: builder.mutation({
             query: ({ id, ...body }) => ({
-                url: `/articles/update/${id}`,
+                url: `/articles/Update/${id}`,
                 method: 'PUT',
                 data: { ...body },
             }),
