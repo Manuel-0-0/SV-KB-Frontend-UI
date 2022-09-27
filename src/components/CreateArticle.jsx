@@ -64,10 +64,10 @@ const CreateArticle = () => {
             defaultName={"Categories"}
           />
         </div>
-        <div className="relative z-0 mb-6 w-full h-full">
+        <div className="relative z-0 mb-6 w-full h-full ">
           <label
             htmlFor="content"
-            className="block mb-2 text-sm font-medium text-gray-900"
+            className="block mb-2 text-lg font-medium text-gray-900 "
           >
             Content
           </label>
@@ -76,7 +76,7 @@ const CreateArticle = () => {
             placeholder="Write Something..."
             formats={formats}
             modules={modules}
-            className="block p-2.5 w-full text-sm h-a4"
+            className="block p-2.5 w-full text-sm h-a4  "
             value={content}
             onChange={setContent}
           />
@@ -87,7 +87,7 @@ const CreateArticle = () => {
             disabled={!canSave}
             onClick={createArticle}
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-4"
           >
             Submit
           </button>
