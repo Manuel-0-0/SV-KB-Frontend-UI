@@ -41,9 +41,9 @@ const Home = () => {
                 Categories
               </h3>
             </div>
-            <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 w-9/12 mx-auto">
+            <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3 px-4 md:px-6 w-9/12 mx-auto text-[#324299] font-bold  text-lg">
               {categories.length > 0 ? (
-                categories.map((category) => <span key={category.id}>{category.categoryName}</span>)
+                categories.map((category) => <span key={category.id} className="hover:underline">{category.categoryName}</span>)
               ) : (
                 <p className="text-xl text-gray-600 mb-2">
                   Sorry no Categories to show{" "}
