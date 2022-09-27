@@ -95,15 +95,15 @@ const Footer = () => {
               </div>
 
               <div>
-                <p className="font-bold mt-6 sm:mt-0">Menu</p>
+                <p className="font-bold mt-3 sm:mt-0">Menu</p>
                 <ul className="list-none">
                   <li className="my-2">
-                    <Link to="/" className="hover:text-blue-700">
+                    <Link to="/" className="hover:underline">
                       Homepage
                     </Link>
                   </li>
                   <li className="my-2">
-                    <Link to="/articles" className="hover:text-blue-700">
+                    <Link to="/articles" className="hover:underline">
                       Articles
                     </Link>
                   </li>
