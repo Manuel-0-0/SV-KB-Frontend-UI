@@ -35,6 +35,11 @@ const CreateArticle = () => {
   };
   return (
     <>
+    <div>
+      <h1 className="text-lg font-bold block ">
+          Create an Article
+       </h1>
+    </div>
       <form>
         <div className="relative z-0 mb-6 w-full group">
           <input
