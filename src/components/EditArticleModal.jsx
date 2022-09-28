@@ -1,17 +1,15 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { toast } from "react-toastify";
 import { useUpdateArticleMutation } from "../redux/article/articleApiSlice";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { formats, modules } from "../utilities/Editor";
 
-const EditCarModal = ({ modal, onModalClose, article }) => {
+const EditArticleModal = ({ modal, onModalClose, article, setArticle }) => {
   // const [fileValue, setFileValue] = useState();
-  const navigate = useNavigate();
-  const [articleDetails, setarticleDetails] = useState(article);
   const [description, setDescription] = useState(article.content);
   const [updateArticle, { isLoading }] = useUpdateArticleMutation();
   const [open, setOpen] = useState(modal);
@@ -21,9 +19,16 @@ const EditCarModal = ({ modal, onModalClose, article }) => {
   const handleUpdateArticle = async () => {
     try {
       await updateArticle({ ...article, content: description }).unwrap();
-      navigate(`/article/${article.id}`);
+      setArticle((prevValue) => {
+        return {
+          ...prevValue,
+          content: description,
+        };
+      });
+      toast.success("Article Updated");
+      onModalClose()
     } catch (err) {
-      console.log(err);
+      toast.error(err.data);
     }
   };
 
@@ -33,7 +38,7 @@ const EditCarModal = ({ modal, onModalClose, article }) => {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      {articleDetails && description ? (
+      {article && description ? (
         <Dialog
           as="div"
           className="fixed z-30 inset-0 overflow-y-auto"
@@ -89,9 +94,9 @@ const EditCarModal = ({ modal, onModalClose, article }) => {
                       name="title"
                       type="text"
                       className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 text-gray-900 rounded-lg focus:outline-none  focus:z-10 sm:text-sm shadow-sm"
-                      value={articleDetails.title}
+                      value={article.title}
                       onChange={(e) =>
-                        setarticleDetails((prevValue) => {
+                        setArticle((prevValue) => {
                           return {
                             ...prevValue,
                             title: e.target.value,
@@ -198,4 +203,4 @@ const EditCarModal = ({ modal, onModalClose, article }) => {
   );
 };
 
-export default EditCarModal;
+export default EditArticleModal;

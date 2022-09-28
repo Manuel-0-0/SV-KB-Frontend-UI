@@ -46,21 +46,37 @@ const EditCarModal = ({ modal, onModalClose }) => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-top bg-white rounded-lg  overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-11/12">
-              <div className="">
-                  <div className="">
-                    <img src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/Gmail_icon__2020_1_owruyd.png"  alt="" />
-                  </div>
-                  
-                  <div className="">
-                    <img  src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/jira_png_1_pz5szx.png" alt="" />
-                  </div>
-                  <div className="text-lg  ">
-                  Send us an Email <span className="text-sm">or</span> Put in a Service 
-                  </div>
-                  <div className="">
-                    <img src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/icon__phone__jdq006.png" alt="" />
-                  </div>
+            <div className="inline-block align-center bg-white rounded-lg py-20 overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+              <div className=" flex flex-wrap py-6 w-1/2 mx-auto justify-between">
+                <div className="">
+                  <img
+                    src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/Gmail_icon__2020_1_owruyd.png"
+                    alt=""
+                  />
+                </div>
+
+                <div className="border"></div>
+
+                <div className="">
+                  <img
+                    src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/jira_png_1_pz5szx.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div className="text-lg font-semibold mb-3">
+                Send us an Email <span className="text-sm font-normal">or</span> Put in a
+                Service
+              </div>
+              <hr className="w-1/2 mx-auto" />
+              <div className="w-full flex justify-center mt-3 items-center flex-col">
+                <div className="">
+                  <img
+                    src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/icon__phone__jdq006.png"
+                    alt=""
+                  />
+                </div>
+                <p className="py-3 text-sm">Call Using xxx.xxx.xxx</p>
               </div>
             </div>
           </Transition.Child>

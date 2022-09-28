@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import parse from "html-react-parser";
+import { toast } from "react-toastify";
 import {
   useGetArticleQuery,
   useDeleteArticleMutation,
@@ -14,13 +15,11 @@ import EditArticleModal from "../components/EditArticleModal";
 const Articles = () => {
   const { articleId } = useParams();
   const navigate = useNavigate();
-  const {
-    data: article,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetArticleQuery({ id: articleId });
+  const { data, isLoading, isSuccess, isError, error } = useGetArticleQuery({
+    id: articleId,
+  });
+
+  const [article, setArticle] = useState();
 
   const [deleteArticle] = useDeleteArticleMutation();
 
@@ -30,18 +29,23 @@ const Articles = () => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    setArticle(data);
+  }, [data]);
+
   const handleDeleteArticlePost = async () => {
     try {
       await deleteArticle({ id: articleId }).unwrap();
+      toast.success("Article deleted successfully");
       navigate("/");
     } catch (err) {
-      console.log(err);
+      toast.error(err.data);
     }
   };
 
   if (isLoading) return <Loading />;
   else if (isError) return <p>{error} </p>;
-  else if (isSuccess)
+  else if (isSuccess && article)
     return (
       <DefaultLayout>
         {/* <div className="h-96 flex max-w-4xl md:mt-20 mx-auto px-12 lg:px-24 justify-center items-center">
@@ -67,10 +71,7 @@ const Articles = () => {
             </button>
           </h1>
           <div className="prose prose-sm sm:prose lg:prose-lg mt-6">
-            <p data-color-mode="light">
-              {" "}
-              {parse(`${article?.content}`)}
-            </p>
+            <p data-color-mode="light"> {parse(`${article?.content}`)}</p>
           </div>
 
           <div className="text-lg mt-10 font-bold">
@@ -91,6 +92,7 @@ const Articles = () => {
           modal={open}
           onModalClose={onModalClose}
           article={article}
+          setArticle={setArticle}
         />
       </DefaultLayout>
     );

@@ -17,23 +17,22 @@ const ArticleTable = ({ headers, articles }) => {
         <tbody>
           {articles?.length > 0 &&
             articles.map((art) => (
-              <Link
-              key={art.id}
-              to={`/articles/${art.id}`}
-                  state={{ artcileId: art.id }}
-                  className="hover:underline"
-              >
-              <tr key={art.id} className="bg-white border-b " >
+              <tr key={art.id} className="bg-white border-b ">
                 {headers.map((header) => (
                   <td
                     key={art.id}
                     className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    {art[header.id]}
+                    <Link
+                      key={art.id}
+                      to={`/articles/${art.id}`}
+                      className="hover:underline"
+                    >
+                      {art[header.id]}
+                    </Link>
                   </td>
                 ))}
               </tr>
-              </Link>
             ))}
         </tbody>
       </table>

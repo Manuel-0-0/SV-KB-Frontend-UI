@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { toast } from "react-toastify";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { useCreateArticleMutation } from "../redux/article/articleApiSlice";
 import DropDown from "./DropDown";
@@ -27,19 +28,18 @@ const CreateArticle = () => {
         }).unwrap();
         setTitle("");
         setContent("");
+        toast.success("Article created");
         navigate("/");
       } catch (err) {
-        console.log(err);
+        toast.error(err.data)
       }
     }
   };
   return (
     <>
-    <div>
-      <h1 className="text-lg font-bold block ">
-          Create an Article
-       </h1>
-    </div>
+      <div>
+        <h1 className="text-lg font-bold block ">Create an Article</h1>
+      </div>
       <form>
         <div className="relative z-0 mb-6 w-full group">
           <input
@@ -82,7 +82,7 @@ const CreateArticle = () => {
             formats={formats}
             modules={modules}
             className="block p-2.5 w-full text-sm flex-1 overflow-y-auto"
-            value={content} 
+            value={content}
             onChange={setContent}
           />
         </div>

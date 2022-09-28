@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useCreateCategoryMutation } from "../redux/category/categoryApiSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateCategory = () => {
   const navigate = useNavigate()
@@ -13,9 +14,10 @@ const CreateCategory = () => {
       try {
         await createNewCategory({ CategoryName: categoryName }).unwrap();
         setCategoryName("");
+        toast.success("Category created");
         navigate('/')
       } catch (err) {
-        console.log(err);
+        toast.error(err.data)
       }
     }
   };
