@@ -7,3 +7,5 @@ export const Article = lazy(() => import('./pages/Article'))
 export const Articles = lazy(() => import('./pages/Articles'))
 
 export const Create = lazy(() => import('./pages/Create'))
+
+export const Category = lazy(() => import('./pages/Category'))

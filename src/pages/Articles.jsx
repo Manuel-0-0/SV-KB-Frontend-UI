@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import DefaultLayout from "../layouts/DefaultLayout";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
+import { selectAllArticles } from "../redux/article/articleApiSlice";
 import DropDown from "../components/DropDown";
+import ArticleTable from "../components/ArticleTable";
 
 const Articles = () => {
   const categories = useSelector(selectAllCategories);
+  const articles = useSelector(selectAllArticles);
   const [category, setCategory] = useState();
+  const [search, setSearch] = useState();
+  const [filteredArticles, setFilteredArticles] = useState(articles);
+
+  useEffect(() => {
+    setFilteredArticles(articles);
+  }, [articles]);
+
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+    if (e.target.value) {
+      setFilteredArticles(
+        [...articles].filter((article) =>
+          article.title.includes(e.target.value)
+        )
+      );
+    } else {
+      setFilteredArticles(articles);
+    }
+  };
+
   return (
     <DefaultLayout>
       <div className="w-9/12 mx-auto p-4">
@@ -37,8 +60,10 @@ const Articles = () => {
           <input
             type="search"
             id="default-search"
+            value={search}
+            onChange={(e) => handleChange(e)}
             className="block p-4 pl-10 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search Aticles..."
+            placeholder="Search Articles..."
             required
           />
           <button
@@ -56,6 +81,15 @@ const Articles = () => {
             selected={category}
             setSelected={setCategory}
             defaultName={"Categories"}
+          />
+        </div>
+        <div className="mt-4">
+          <ArticleTable
+            headers={[
+              { name: "Article Name", id: "title" },
+              { name: "Date", id: "dateCreated" },
+            ]}
+            articles={filteredArticles}
           />
         </div>
       </div>

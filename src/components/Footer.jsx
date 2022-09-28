@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ContactModal from "../components/ContactModal";
 
 const Footer = () => {
+  const [open, setOpen] = useState(false);
+
+  const onModalClose = () => setOpen(false);
   return (
     <>
       <div className=" h-full bg-[#324299] overflow-hidden">
@@ -107,6 +111,9 @@ const Footer = () => {
                       Articles
                     </Link>
                   </li>
+                  <li>
+                    <button onClick={() => setOpen(true)}>Contact us</button>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -126,6 +133,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <ContactModal modal={open} onModalClose={onModalClose} />
     </>
   );
 };

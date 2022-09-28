@@ -64,7 +64,7 @@ const CreateArticle = () => {
             defaultName={"Categories"}
           />
         </div>
-        <div className="relative z-0 mb-6 w-full h-full ">
+        <div className="relative flex flex-1 flex-col z-0 mb-6 w-full h-full ">
           <label
             htmlFor="content"
             className="block mb-2 text-lg font-medium text-gray-900 "
@@ -76,8 +76,8 @@ const CreateArticle = () => {
             placeholder="Write Something..."
             formats={formats}
             modules={modules}
-            className="block p-2.5 w-full text-sm h-a4  "
-            value={content}
+            className="block p-2.5 w-full text-sm flex-1 overflow-y-auto"
+            value={content} 
             onChange={setContent}
           />
         </div>

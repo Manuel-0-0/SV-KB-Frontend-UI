@@ -42,14 +42,14 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
                 method: 'PATCH',
                 data: { ...body },
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Categories', id: arg.id }],
+            invalidatesTags: [{ type: 'Categories', id: "LIST" }],
         }),
         deleteCategory: builder.mutation({
             query: ({ id }) => ({
                 url: `/category/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Categories', id: arg.id }]
+            invalidatesTags: [{ type: 'Categories', id: "LIST" }]
         }),
     }),
 })

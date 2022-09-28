@@ -28,9 +28,16 @@ export const articleApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
         }),
+        searchArticles: builder.query({
+            query: ({ word }) => ({
+                url: `/articles/Search?keyword=${word}`,
+                method: 'GET',
+            }),
+            providesTags: (_result, _error, id) => [{ type: 'Articles', id: "LIST" }],
+        }),
         getArticlesInCategory: builder.query({
             query: ({ id }) => ({
-                url: `/articles?CategoryId=${id}`,
+                url: `/articles/?CategoryId=${id}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
@@ -49,19 +56,19 @@ export const articleApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 data: { ...body },
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Articles', id: arg.id }],
+            invalidatesTags: [{ type: 'Articles', id: "LIST" }],
         }),
         deleteArticle: builder.mutation({
             query: article => ({
                 url: `/articles/Delete/${article.id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: 'Articles', id: arg.id }]
+            invalidatesTags: [{ type: 'Articles', id: "LIST" }]
         }),
     }),
 })
 
-export const { useGetArticlesQuery, useGetArticleQuery, useGetArticlesInCategoryQuery, useCreateArticleMutation, useDeleteArticleMutation, useUpdateArticleMutation } = articleApiSlice
+export const { useGetArticlesQuery, useGetArticleQuery, useGetArticlesInCategoryQuery, useSearchArticlesQuery, useCreateArticleMutation, useDeleteArticleMutation, useUpdateArticleMutation } = articleApiSlice
 
 export const selectArticleResult = articleApiSlice.endpoints.getArticles.select()
 
