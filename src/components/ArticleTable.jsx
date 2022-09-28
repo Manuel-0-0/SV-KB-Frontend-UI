@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ArticleTable = ({ headers, articles }) => {
   return (
@@ -16,7 +17,13 @@ const ArticleTable = ({ headers, articles }) => {
         <tbody>
           {articles?.length > 0 &&
             articles.map((art) => (
-              <tr key={art.id} className="bg-white border-b">
+              <Link
+              key={art.id}
+              to={`/articles/${art.id}`}
+                  state={{ artcileId: art.id }}
+                  className="hover:underline"
+              >
+              <tr key={art.id} className="bg-white border-b " >
                 {headers.map((header) => (
                   <td
                     key={art.id}
@@ -26,6 +33,7 @@ const ArticleTable = ({ headers, articles }) => {
                   </td>
                 ))}
               </tr>
+              </Link>
             ))}
         </tbody>
       </table>

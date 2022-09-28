@@ -46,11 +46,21 @@ const EditCarModal = ({ modal, onModalClose }) => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-top bg-white rounded-lg px-10 py-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-11/12">
-              <div>
-                <h2 className="mt-6 text-center text-xl sm:text-3xl font-extrabold text-gray-900">
-                  Edit Article
-                </h2>
+            <div className="inline-block align-top bg-white rounded-lg  overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-11/12">
+              <div className="">
+                  <div className="">
+                    <img src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/Gmail_icon__2020_1_owruyd.png"  alt="" />
+                  </div>
+                  
+                  <div className="">
+                    <img  src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/jira_png_1_pz5szx.png" alt="" />
+                  </div>
+                  <div className="text-lg  ">
+                  Send us an Email <span className="text-sm">or</span> Put in a Service 
+                  </div>
+                  <div className="">
+                    <img src="https://res.cloudinary.com/dz0oop5kb/image/upload/v1664340164/svco/icon__phone__jdq006.png" alt="" />
+                  </div>
               </div>
             </div>
           </Transition.Child>
