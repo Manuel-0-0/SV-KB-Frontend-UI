@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useCreateCategoryMutation } from "../redux/category/categoryApiSlice";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addToast } from "../redux/toast/toast";
 
 const CreateCategory = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [createNewCategory, { isLoading }] = useCreateCategoryMutation();
   const [categoryName, setCategoryName] = useState("");
   const canSave = [categoryName].every(Boolean) && !isLoading;
@@ -14,20 +16,29 @@ const CreateCategory = () => {
       try {
         await createNewCategory({ CategoryName: categoryName }).unwrap();
         setCategoryName("");
-        toast.success("Category created");
-        navigate('/')
+        dispatch(
+          addToast({
+            message: "Category Created successfully",
+            messageType: "success",
+          })
+        );
+        navigate("/");
       } catch (err) {
-        toast.error(err.data)
+        dispatch(
+          addToast({
+            message: err.data,
+            messageType: "error",
+          })
+        );
       }
     }
   };
+
   return (
     <>
-    <div>
-      <h1 className="text-lg font-bold block ">
-          Create a Category
-       </h1>
-    </div>
+      <div>
+        <h1 className="text-lg font-bold block ">Create a Category</h1>
+      </div>
       <form>
         <div className="relative z-0 mb-6 w-full group">
           <input

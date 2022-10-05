@@ -7,18 +7,16 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store'
 import { categoryApiSplice } from './redux/category/categoryApiSlice';
 import { articleApiSlice } from './redux/article/articleApiSlice'
-import { ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
+import Toast from "./components/Toast"
 
 store.dispatch(categoryApiSplice.endpoints.getCategories.initiate())
 store.dispatch(articleApiSlice.endpoints.getArticles.initiate())
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
-      <ToastContainer />
+      <Toast />
     </Provider>
   </React.StrictMode>
 );

@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { toast } from "react-toastify";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { useCreateArticleMutation } from "../redux/article/articleApiSlice";
 import DropDown from "./DropDown";
 import { formats, modules } from "../utilities/Editor";
+import { addToast } from "../redux/toast/toast";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [category, setCategory] = useState();
   const categories = useSelector(selectAllCategories);
   const [createNewArticle, { isLoading }] = useCreateArticleMutation();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
   const canSave = [title, content, category?.id].every(Boolean) && !isLoading;
 
   const createArticle = async () => {
@@ -28,10 +30,20 @@ const CreateArticle = () => {
         }).unwrap();
         setTitle("");
         setContent("");
-        toast.success("Article created");
+        dispatch(
+          addToast({
+            message: "Article Created successfully",
+            messageType: "success",
+          })
+        );
         navigate("/");
       } catch (err) {
-        toast.error(err.data)
+        dispatch(
+          addToast({
+            message: err.data,
+            messageType: "error",
+          })
+        );
       }
     }
   };

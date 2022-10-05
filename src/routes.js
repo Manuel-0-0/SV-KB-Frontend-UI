@@ -9,3 +9,7 @@ export const Articles = lazy(() => import('./pages/Articles'))
 export const Create = lazy(() => import('./pages/Create'))
 
 export const Category = lazy(() => import('./pages/Category'))
+
+export const Login = lazy(() => import('./pages/Login'))
+
+export const NotFound = lazy(() => import('./pages/404'))

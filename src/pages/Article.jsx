@@ -4,7 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import parse from "html-react-parser";
-import { toast } from "react-toastify";
+import { useDispatch } from 'react-redux'
+import { addToast } from "../redux/toast/toast";
 import {
   useGetArticleQuery,
   useDeleteArticleMutation,
@@ -15,6 +16,7 @@ import EditArticleModal from "../components/EditArticleModal";
 const Articles = () => {
   const { articleId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { data, isLoading, isSuccess, isError, error } = useGetArticleQuery({
     id: articleId,
   });
@@ -36,10 +38,20 @@ const Articles = () => {
   const handleDeleteArticlePost = async () => {
     try {
       await deleteArticle({ id: articleId }).unwrap();
-      toast.success("Article deleted successfully");
+      dispatch(
+        addToast({
+          message: "Article Deleted successfully",
+          messageType: "success",
+        })
+      );
       navigate("/");
     } catch (err) {
-      toast.error(err.data);
+      dispatch(
+        addToast({
+          message: err.data,
+          messageType: "error",
+        })
+      );
     }
   };
 

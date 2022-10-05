@@ -1,15 +1,16 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { toast } from "react-toastify";
 import { useUpdateArticleMutation } from "../redux/article/articleApiSlice";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { formats, modules } from "../utilities/Editor";
+import { addToast } from '../redux/toast/toast'
 
 const EditArticleModal = ({ modal, onModalClose, article, setArticle }) => {
   // const [fileValue, setFileValue] = useState();
+  const dispatch = useDispatch();
   const [description, setDescription] = useState(article.content);
   const [updateArticle, { isLoading }] = useUpdateArticleMutation();
   const [open, setOpen] = useState(modal);
@@ -25,10 +26,20 @@ const EditArticleModal = ({ modal, onModalClose, article, setArticle }) => {
           content: description,
         };
       });
-      toast.success("Article Updated");
+      dispatch(
+        addToast({
+          message: "Article updated",
+          messageType: "success",
+        })
+      );
       onModalClose()
     } catch (err) {
-      toast.error(err.data);
+      dispatch(
+        addToast({
+          message: err.data,
+          messageType: "error",
+        })
+      );
     }
   };
 
