@@ -5,7 +5,7 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useSelector, useDispatch } from "react-redux";
-import { removeToast } from "../redux/toast/toast";
+import { removeToast } from "../redux/toast/toastSlice";
 
 const Toast = () => {
   const message = useSelector((state) => state.toast.message);

@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    message: "",
-    messageType: ""
+    message: null,
+    messageType: null
 }
 
 export const toastSlice = createSlice({
@@ -14,8 +14,8 @@ export const toastSlice = createSlice({
             state.messageType = action.payload.messageType
         },
         removeToast: (state) => {
-            state.message = ''
-            state.messageType = ''
+            state.message = null
+            state.messageType = null
         },
 
     },

@@ -3,11 +3,13 @@ import {
     combineReducers,
 } from '@reduxjs/toolkit'
 import { apiSlice } from './api/apiSlice'
-import toastReducer from './toast/toast'
+import toastReducer from './toast/toastSlice'
+import userReducer from './user/userSlice'
 
 export const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
-    toast: toastReducer
+    toast: toastReducer,
+    user: userReducer
 })
 
 export const store = configureStore({

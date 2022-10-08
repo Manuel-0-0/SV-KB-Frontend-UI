@@ -80,5 +80,6 @@ const selectArticleData = createSelector(
 export const {
     selectAll: selectAllArticles,
     selectById: selectArticleById,
-    selectIds: selectArticleIds
+    selectIds: selectArticleIds,
+    selectTotal: selectArticleTotal,
 } = articleAdapter.getSelectors(state => selectArticleData(state) ?? initialState)

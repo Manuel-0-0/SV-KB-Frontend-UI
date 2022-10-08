@@ -7,7 +7,7 @@ import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { useCreateArticleMutation } from "../redux/article/articleApiSlice";
 import DropDown from "./DropDown";
 import { formats, modules } from "../utilities/Editor";
-import { addToast } from "../redux/toast/toast";
+import { addToast } from "../redux/toast/toastSlice";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
@@ -38,9 +38,10 @@ const CreateArticle = () => {
         );
         navigate("/");
       } catch (err) {
+        const error = err.data?.error || err.data;
         dispatch(
           addToast({
-            message: err.data,
+            message: error,
             messageType: "error",
           })
         );

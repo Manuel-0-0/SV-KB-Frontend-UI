@@ -6,7 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { useUpdateArticleMutation } from "../redux/article/articleApiSlice";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { formats, modules } from "../utilities/Editor";
-import { addToast } from '../redux/toast/toast'
+import { addToast } from '../redux/toast/toastSlice'
 
 const EditArticleModal = ({ modal, onModalClose, article, setArticle }) => {
   // const [fileValue, setFileValue] = useState();
@@ -34,9 +34,10 @@ const EditArticleModal = ({ modal, onModalClose, article, setArticle }) => {
       );
       onModalClose()
     } catch (err) {
+      const error = err.data?.error || err.data;
       dispatch(
         addToast({
-          message: err.data,
+          message: error,
           messageType: "error",
         })
       );

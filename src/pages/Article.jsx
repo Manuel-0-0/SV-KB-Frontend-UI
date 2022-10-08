@@ -5,7 +5,7 @@ import moment from "moment";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import parse from "html-react-parser";
 import { useDispatch } from 'react-redux'
-import { addToast } from "../redux/toast/toast";
+import { addToast } from "../redux/toast/toastSlice";
 import {
   useGetArticleQuery,
   useDeleteArticleMutation,

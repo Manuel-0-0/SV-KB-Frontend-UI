@@ -11,6 +11,7 @@ import Toast from "./components/Toast"
 
 store.dispatch(categoryApiSplice.endpoints.getCategories.initiate())
 store.dispatch(articleApiSlice.endpoints.getArticles.initiate())
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

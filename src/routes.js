@@ -12,4 +12,6 @@ export const Category = lazy(() => import('./pages/Category'))
 
 export const Login = lazy(() => import('./pages/Login'))
 
+export const Dashboard = lazy(() => import('./pages/Dashboard'))
+
 export const NotFound = lazy(() => import('./pages/404'))

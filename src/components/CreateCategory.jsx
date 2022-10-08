@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCreateCategoryMutation } from "../redux/category/categoryApiSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToast } from "../redux/toast/toast";
+import { addToast } from "../redux/toast/toastSlice";
 
 const CreateCategory = () => {
   const navigate = useNavigate();
@@ -24,9 +24,10 @@ const CreateCategory = () => {
         );
         navigate("/");
       } catch (err) {
+        const error = err.data?.error || err.data;
         dispatch(
           addToast({
-            message: err.data,
+            message: error,
             messageType: "error",
           })
         );

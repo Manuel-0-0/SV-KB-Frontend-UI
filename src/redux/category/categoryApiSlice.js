@@ -68,4 +68,5 @@ export const {
     selectAll: selectAllCategories,
     selectById: selectCategoryById,
     selectIds: selectCategoryIds,
+    selectTotal: selectCategoryTotal,
 } = cartegoryAdapter.getSelectors(state => selectCatgeoryData(state) ?? initialState)
