@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
+import MDEditor from "@uiw/react-md-editor";
 import "react-quill/dist/quill.snow.css";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { useCreateArticleMutation } from "../redux/article/articleApiSlice";
@@ -98,6 +99,7 @@ const CreateArticle = () => {
             value={content}
             onChange={setContent}
           />
+          {/* <MDEditor value={content} onChange={setContent} /> */}
         </div>
 
         <div className="relative z-0 mb-6 w-full h-full">

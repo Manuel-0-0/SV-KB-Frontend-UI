@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+
 import { useUpdateArticleMutation } from "../redux/article/articleApiSlice";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { formats, modules } from "../utilities/Editor";

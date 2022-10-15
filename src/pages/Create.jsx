@@ -2,9 +2,35 @@ import React, { useState } from "react";
 import DefaultLayout from "../layouts/DefaultLayout";
 import CreateCategory from "../components/CreateCategory";
 import CreateArticle from "../components/CreateArticle";
+import { convertToHtml } from "mammoth/mammoth.browser";
+import ReactQuill from "react-quill";
+import { formats, modules } from "../utilities/Editor";
 
 const Create = () => {
   const [toggle, setToggle] = useState(false);
+  const [result, setResult] = useState("");
+
+  const handleChange = (event) => {
+    readFileInputEventAsArrayBuffer(event, async function (arrayBuffer) {
+      const hello = await convertToHtml({ arrayBuffer: arrayBuffer });
+      setResult(hello.value);
+    });
+  };
+
+  function readFileInputEventAsArrayBuffer(event, callback) {
+    var file = event.target.files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function (loadEvent) {
+      var arrayBuffer = loadEvent.target.result;
+      callback(arrayBuffer);
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+
+  console.log(result);
   return (
     <DefaultLayout>
       <div className="lg:w-6/12 md:w-8/12 w-10/12 mx-auto flex justify-between p-4">
@@ -30,6 +56,17 @@ const Create = () => {
       <div className="mt-4 lg:w-6/12 md:w-8/12 w-10/12 mx-auto mb-4">
         {!toggle && <CreateCategory />}
         {toggle && <CreateArticle />}
+
+        <input type="file" onChange={(e) => handleChange(e)} />
+
+        {result &&  <ReactQuill
+                      theme="snow"
+                      value={result}
+                      onChange={setResult}
+                      formats={formats}
+                      modules={modules}
+                      className="block p-2.5 w-full text-sm"
+                    />}
       </div>
     </DefaultLayout>
   );
