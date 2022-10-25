@@ -3,8 +3,9 @@ import { useCreateCategoryMutation } from "../redux/category/categoryApiSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToast } from "../redux/toast/toastSlice";
+import CreateLayout from "../layouts/CreateLayout";
 
-const CreateCategory = () => {
+const CreateCategory = ({ setShowCreate }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [createNewCategory, { isLoading }] = useCreateCategoryMutation();
@@ -22,7 +23,6 @@ const CreateCategory = () => {
             messageType: "success",
           })
         );
-        navigate("/");
       } catch (err) {
         const error = err.data?.error || err.data;
         dispatch(
@@ -36,10 +36,7 @@ const CreateCategory = () => {
   };
 
   return (
-    <>
-      <div>
-        <h1 className="text-lg font-bold block ">Create a Category</h1>
-      </div>
+    <CreateLayout title="Category" setShowCreate={setShowCreate}>
       <form>
         <div className="relative z-0 mb-6 w-full group">
           <input
@@ -68,7 +65,7 @@ const CreateCategory = () => {
           Submit
         </button>
       </form>
-    </>
+    </CreateLayout>
   );
 };
 

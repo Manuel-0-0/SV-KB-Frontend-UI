@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import DefaultLayout from "../layouts/DefaultLayout";
 import CategoryArticles from "../components/CategoryArticles";
@@ -9,22 +9,19 @@ const Category = () => {
   const [category, setCategory] = useState();
   const [active, setActive] = useState();
   const location = useLocation();
+  const { categoryId } = useParams();
   const categories = useSelector(selectAllCategories);
 
   useEffect(() => {
-    if (location.state?.categoryId) {
-      setCategory(
-        categories.find((category) => category.id === location.state.categoryId)
-      );
-      setActive(
-        categories.find((category) => category.id === location.state.categoryId)
-          .id
-      );
+    let id = location?.state?.categoryId || categoryId;
+    if (id) {
+      setCategory(categories.find((category) => category.id === Number(id)));
+      setActive(categories.find((category) => category.id === Number(id)).id);
     } else {
       setCategory(categories[0]);
       setActive(categories[0].id);
     }
-  }, [categories, location.state?.categoryId]);
+  }, [categories, location?.state?.categoryId, categoryId]);
 
   return (
     <DefaultLayout>
@@ -55,7 +52,7 @@ const Category = () => {
           )}
         </ul>
       </div>
-      {category && <CategoryArticles categoryId={category.id} />}
+      {category && <CategoryArticles articles={category.articles} />}
     </DefaultLayout>
   );
 };

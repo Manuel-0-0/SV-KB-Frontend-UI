@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSelector } from '@reduxjs/toolkit'
 import { apiSlice } from '../api/apiSlice'
 
-const cartegoryAdapter = createEntityAdapter()
+const categoryAdapter = createEntityAdapter()
 
-const initialState = cartegoryAdapter.getInitialState({})
+const initialState = categoryAdapter.getInitialState({})
 
 export const categoryApiSplice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -12,7 +12,7 @@ export const categoryApiSplice = apiSlice.injectEndpoints({
                 url: '/category/AllCategories',
                 method: 'GET',
             }),
-            transformResponse: responseData => cartegoryAdapter.setAll(initialState, responseData),
+            transformResponse: responseData => categoryAdapter.setAll(initialState, responseData),
             providesTags: (result, _error, _arg) =>
                 result ?
                     [
@@ -58,7 +58,7 @@ export const { useGetCategoriesQuery, useGetCategoryQuery, useCreateCategoryMuta
 
 export const selectCategoryResult = categoryApiSplice.endpoints.getCategories.select()
 
-const selectCatgeoryData = createSelector(
+const selectCategoryData = createSelector(
     selectCategoryResult,
     categoryResult => categoryResult.data
 )
@@ -69,4 +69,4 @@ export const {
     selectById: selectCategoryById,
     selectIds: selectCategoryIds,
     selectTotal: selectCategoryTotal,
-} = cartegoryAdapter.getSelectors(state => selectCatgeoryData(state) ?? initialState)
+} = categoryAdapter.getSelectors(state => selectCategoryData(state) ?? initialState)

@@ -12,13 +12,28 @@ export const articleApiSlice = apiSlice.injectEndpoints({
                 url: '/articles/All',
                 method: 'GET',
             }),
-            transformResponse: responseData => articleAdapter.setAll(initialState, responseData),
-            providesTags: (result, _error, _arg) =>
-                result ?
+            transformResponse: responseData => {
+                const fixed = responseData.map((article) => {
+                    return {
+                        id: article.Article.id,
+                        title: article.Article.title,
+                        dateCreated: article.Article.dateCreated,
+                        content: article.Article.content,
+                        category_id: article.category_id,
+                        category_name: article.category_name,
+                        user_id: article.user_id,
+                        user_name: article.user_name
+                    }
+                })
+                return articleAdapter.setAll(initialState, fixed)
+            },
+            providesTags: (result, _error, arg) => {
+                return result ?
                     [
                         { type: 'Articles', id: "LIST" },
                         ...result?.ids?.map(({ id }) => ({ type: 'Articles', id })),
                     ] : [{ type: 'Articles', id: "LIST" }]
+            }
 
         }),
         getArticle: builder.query({
@@ -28,19 +43,19 @@ export const articleApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
         }),
-        searchArticles: builder.query({
-            query: ({ word }) => ({
-                url: `/articles/Search?keyword=${word}`,
-                method: 'GET',
-            }),
-            providesTags: (_result, _error, id) => [{ type: 'Articles', id: "LIST" }],
-        }),
         getArticlesInCategory: builder.query({
             query: ({ id }) => ({
                 url: `/articles/?CategoryId=${id}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, id) => [{ type: 'Articles', id }],
+        }),
+        searchArticles: builder.query({
+            query: (body) => ({
+                url: `/articles/Search?keyword=${body?.word ? body.word : ''}`,
+                method: 'GET',
+            }),
+            providesTags: (_result, _error, id) => [{ type: 'Articles', id: "LIST" }],
         }),
         createArticle: builder.mutation({
             query: (body) => ({

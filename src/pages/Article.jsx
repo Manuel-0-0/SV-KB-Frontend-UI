@@ -21,6 +21,8 @@ const Articles = () => {
     id: articleId,
   });
 
+  console.log(data)
+
   const [article, setArticle] = useState();
 
   const [deleteArticle] = useDeleteArticleMutation();

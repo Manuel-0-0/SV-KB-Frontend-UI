@@ -22,9 +22,9 @@ const Header = () => {
       current: location.pathname.startsWith("/articles") ? true : false,
     },
     {
-      name: "Create",
-      href: "/create",
-      current: location.pathname === "/create" ? true : false,
+      name: "Login",
+      href: "/login",
+      current: location.pathname === "/login" ? true : false,
     },
   ];
 

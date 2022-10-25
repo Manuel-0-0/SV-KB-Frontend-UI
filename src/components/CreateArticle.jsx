@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
-import MDEditor from "@uiw/react-md-editor";
+import { convertToHtml } from "mammoth/mammoth.browser";
 import "react-quill/dist/quill.snow.css";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { useCreateArticleMutation } from "../redux/article/articleApiSlice";
 import DropDown from "./DropDown";
 import { formats, modules } from "../utilities/Editor";
 import { addToast } from "../redux/toast/toastSlice";
+import CreateLayout from "../layouts/CreateLayout";
 
-const CreateArticle = () => {
+const CreateArticle = ({ setShowCreate }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [category, setCategory] = useState();
@@ -18,6 +19,26 @@ const CreateArticle = () => {
   const [createNewArticle, { isLoading }] = useCreateArticleMutation();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  const handleChange = (event) => {
+    readFileInputEventAsArrayBuffer(event, async function (arrayBuffer) {
+      const result = await convertToHtml({ arrayBuffer: arrayBuffer });
+      setContent((prevContent) => prevContent + result.value);
+    });
+  };
+
+  function readFileInputEventAsArrayBuffer(event, callback) {
+    var file = event.target.files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function (loadEvent) {
+      var arrayBuffer = loadEvent.target.result;
+      callback(arrayBuffer);
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
 
   const canSave = [title, content, category?.id].every(Boolean) && !isLoading;
 
@@ -28,6 +49,7 @@ const CreateArticle = () => {
           title,
           content,
           CategoryId: category.id,
+          UserId: 1
         }).unwrap();
         setTitle("");
         setContent("");
@@ -50,10 +72,7 @@ const CreateArticle = () => {
     }
   };
   return (
-    <>
-      <div>
-        <h1 className="text-lg font-bold block ">Create an Article</h1>
-      </div>
+    <CreateLayout title="Article" setShowCreate={setShowCreate}>
       <form>
         <div className="relative z-0 mb-6 w-full group">
           <input
@@ -95,25 +114,33 @@ const CreateArticle = () => {
             placeholder="Write Something..."
             formats={formats}
             modules={modules}
-            className="block p-2.5 w-full text-sm flex-1 overflow-y-auto"
+            className="block p-2.5 w-full h-96 text-sm flex-1 overflow-y-auto"
             value={content}
             onChange={setContent}
           />
           {/* <MDEditor value={content} onChange={setContent} /> */}
         </div>
-
-        <div className="relative z-0 mb-6 w-full h-full">
+        <div className="relative flex items-center mb-6 w-fit h-full">
           <button
             disabled={!canSave}
             onClick={createArticle}
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-4"
+            className="text-white mr-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-4"
           >
             Submit
           </button>
+          <input
+            accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer"
+            type="file"
+            onChange={(e) => handleChange(e)}
+          />
+          <p class="mt-1 text-sm text-gray-500" id="file_input_help">
+            .doc, .docx.
+          </p>
         </div>
       </form>
-    </>
+    </CreateLayout>
   );
 };
 

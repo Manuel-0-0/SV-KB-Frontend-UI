@@ -18,20 +18,32 @@ const ArticleTable = ({ headers, articles }) => {
           {articles?.length > 0 &&
             articles.map((art) => (
               <tr key={art.id} className="bg-white border-b ">
-                {headers.map((header) => (
-                  <td
-                    key={art.id}
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
-                  >
-                    <Link
+                {headers.map((header) => {
+                  if (header?.link) {
+                    return (
+                      <td
+                        key={art.id}
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        <Link
+                          key={art.id}
+                          to={`/${header.link}/${art.id}`}
+                          className="hover:underline"
+                        >
+                          {art[header.id]}
+                        </Link>
+                      </td>
+                    );
+                  }
+                  return (
+                    <td
                       key={art.id}
-                      to={`/articles/${art.id}`}
-                      className="hover:underline"
+                      className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
                     >
                       {art[header.id]}
-                    </Link>
-                  </td>
-                ))}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
         </tbody>

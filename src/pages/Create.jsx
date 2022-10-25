@@ -30,7 +30,6 @@ const Create = () => {
     reader.readAsArrayBuffer(file);
   }
 
-  console.log(result);
   return (
     <DefaultLayout>
       <div className="lg:w-6/12 md:w-8/12 w-10/12 mx-auto flex justify-between p-4">

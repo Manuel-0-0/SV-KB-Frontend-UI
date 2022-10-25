@@ -1,7 +1,11 @@
 * {
   box-sizing: border-box;
 }
-
+.ql-editor{
+  min-height: 250px !important;
+  max-height: 500px !important;
+  overflow-y: auto
+}
 body {
   overflow-x: hidden !important;
 }

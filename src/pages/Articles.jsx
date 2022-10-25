@@ -4,7 +4,7 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import { selectAllCategories } from "../redux/category/categoryApiSlice";
 import { selectAllArticles } from "../redux/article/articleApiSlice";
 import DropDown from "../components/DropDown";
-import ArticleTable from "../components/ArticleTable";
+import Table from "../components/Table";
 
 const Articles = () => {
   const categories = useSelector(selectAllCategories);
@@ -84,10 +84,11 @@ const Articles = () => {
           />
         </div>
         <div className="mt-4">
-          <ArticleTable
+          <Table
             headers={[
-              { name: "Article Name", id: "title" },
-              { name: "Date", id: "dateCreated" },
+              { name: "Article Name", id: "title", link:'articles' },
+              { name: "Date Created", id: "dateCreated" },
+              {name :"Category", id: "category_name", link: 'category'}
             ]}
             articles={filteredArticles}
           />

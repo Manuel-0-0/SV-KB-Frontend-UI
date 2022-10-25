@@ -1,34 +1,41 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { useDispatch } from "react-redux";
+import { useDispatch, } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Icon from "../utilities/icons/SunValley";
 import { LoginSchema } from "../utilities/schemas";
 import { addToast } from "../redux/toast/toastSlice";
 import { useLoginMutation } from "../redux/user/userApiSlice";
 import { setCredentials } from "../redux/user/userSlice";
+import Cookies from 'js-cookie'
+
 
 const Login = () => {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
 
-  const handleLogin = async ({ email, password }, { setSubmitting }) => {
+
+  const handleLogin = async ({ username, password }, { setSubmitting }) => {
     try {
-      console.log("hi");
       setSubmitting(true);
       const loggedInUser = await login({
-        email,
-        password,
+        username: username,
+        password: password,
       }).unwrap();
 
       dispatch(
         setCredentials({
-          user: loggedInUser.user,
-          token: loggedInUser.token,
+          user: username,
+          token: loggedInUser.Authorization,
         })
       );
+
+
+      Cookies.set('sv_user', username)
+      Cookies.set('sv_access', loggedInUser.Authorization)
 
       dispatch(
         addToast({
@@ -37,7 +44,7 @@ const Login = () => {
         })
       );
       setSubmitting(false);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       const error = err.data?.error || err.data;
       dispatch(
@@ -69,7 +76,7 @@ const Login = () => {
               </h1>
               <Formik
                 initialValues={{
-                  email: "",
+                  username: "",
                   password: "",
                 }}
                 validationSchema={LoginSchema}
@@ -79,26 +86,26 @@ const Login = () => {
                   <Form className="space-y-4 md:space-y-6">
                     <div>
                       <label
-                        htmlFor="email"
+                        htmlFor="username"
                         className="block mb-2 text-sm font-medium text-gray-900"
                       >
-                        Email Address
+                        Username
                       </label>
                       <Field
-                        id="email"
-                        name="email"
-                        type="email"
+                        id="username"
+                        name="username"
+                        type="text"
                         className={`text-gray-900 sm:text-sm rounded-lg bg-gray-50 block w-full p-2.5 ${
-                          errors.email && touched.email
+                          errors.username && touched.username
                             ? "border-red-300 placeholder-red-500 focus:ring-red-500 focus:border-red-500"
                             : "focus:ring-[#324299] focus:border-[#324299]"
                         } `}
-                        placeholder="example@example.com"
+                        placeholder="joy"
                       />
                       <ErrorMessage
                         className="text-red-500 ml-2 mt-2"
                         component="div"
-                        name="email"
+                        name="username"
                       />
                     </div>
                     <div>
